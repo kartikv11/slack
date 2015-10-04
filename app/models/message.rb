@@ -1,7 +1,18 @@
 class Message < ActiveRecord::Base
+
+  #a message belongs to a user	
   belongs_to :user
-  has_many :message_recipient_channels
-  has_many :message_recipient_users
-  validates :content, presence: true, length: { minimum: 1, maximum: 260 }
-  validates :user, presence: true, unless: ->(provider){provider.user.present?} 
+
+  #a message can be sent to multiple channels at once
+  has_many :message_recipient_channels, dependent: :destroy
+
+  #a message can be sent to multiple users at once
+  has_many :message_recipient_users, dependent: :destroy
+
+  #validates presence of user
+  validates :user, presence: true
+
+  #validates
+  validates :content, length: {minimum: 1, maximum: 320}
+  
 end
